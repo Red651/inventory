@@ -32,17 +32,17 @@ DashboardRouter.post("/add",upload.fields([
             unit_price: Number.parseFloat(formData.unit_price),
             total_value: Number.parseFloat(formData.total_value),
             supplier_name: formData.supplier_name,
-            supplier_contact: formData.get("supplier_contact"),
-            current_location: formData.get("current_location"),
-            date_maintenance: formData.get("date_maintenance") ? new Date(formData.get("date_maintenance")) : null,
-            date_of_acquisition: formData.get("date_of_acquisition")
-                ? new Date(formData.get("date_of_acquisition"))
+            supplier_contact: formData.supplier_contact,
+            current_location: formData.current_location,
+            date_maintenance: formData.date_maintenance ? new Date(formData.date_maintenance) : null,
+            date_of_acquisition: formData.date_of_acquisition
+                ? new Date(formData.date_of_acquisition)
                 : null,
-            expiration_date: formData.get("expiration_date") ? new Date(formData.get("expiration_date")) : null,
-            condition: formData.get("condition"),
-            check_inventory_update: formData.get("check_inventory_update"),
-            group_division: formData.get("group_division"),
-            notes: formData.get("notes"),
+            expiration_date: formData.expiration_date ? new Date(formData.expiration_date) : null,
+            condition: formData.condition,
+            check_inventory_update: formData.check_inventory_update,
+            group_division: formData.group_division,
+            notes: formData.notes,
     }
     const item = await prisma.inventory.create({
         data: itemData,
