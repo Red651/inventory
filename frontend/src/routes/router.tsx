@@ -9,7 +9,7 @@ import { paths } from './paths';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to={paths.auth.login} replace />,
+    element: <Navigate to={paths.dashboard.home} replace />,
   },
   {
     path: paths.auth.root,
