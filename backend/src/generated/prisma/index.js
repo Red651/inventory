@@ -123,7 +123,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\ASUS\\Downloads\\inventory-main\\inventory-main\\backend\\src\\generated\\prisma",
+      "value": "C:\\Users\\Andalas\\Desktop\\InventoryManagementAPS\\backend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -137,7 +137,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\ASUS\\Downloads\\inventory-main\\inventory-main\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\Andalas\\Desktop\\InventoryManagementAPS\\backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -151,11 +151,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:apdps@localhost/inventory?schema=public"
+        "value": null
       }
     }
   },

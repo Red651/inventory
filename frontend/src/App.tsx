@@ -1,14 +1,20 @@
-import  Login from "@/pages/login"
-import { Routes, Route } from "react-router-dom"
-import  Dashboard from "./pages/dashboard"
 
-function App() {
-  return(
-    <Routes>
-      <Route path="/" element={<Login/>}/>
-      <Route path="/dashboard" element={<Dashboard/>}/>
-    </Routes>
-  )
+import './global.css';
+
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/api/query-client';
+import { AuthProvider } from '@/providers/auth-provider';
+import { Router } from '@/routes/router';
+import { ThemeProvider } from './components/theme-provider';
+
+export function App() {
+  return (
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
+    </QueryClientProvider>
+    </ThemeProvider>
+  );
 }
-
-export default App
