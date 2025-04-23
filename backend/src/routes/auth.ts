@@ -31,5 +31,15 @@ authRouter.post('/login', async (req: Request, res: Response) => {
 }
 );
 
+authRouter.get('/logout', async (req: Request, res: Response) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ message: "Logout failed", success: false });
+        }
+        res.clearCookie("connect.sid");
+        res.json({ message: "Logout successful", success: true });
+    });
+});    
+
 export default authRouter;
 
