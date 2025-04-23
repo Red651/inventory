@@ -1,7 +1,120 @@
 import { Request, Response } from "express";
 import { Router } from "express";
 import { prisma } from "../generated/prisma/database";
+import { v4 as uuid } from "uuid";
+import { upload } from "../Middleware/upload";
 
-interface DashboardData {
-    
+const DashboardRouter = Router();
+
+// Barang Dashboard
+
+// add barang
+DashboardRouter.post("/add",upload.fields([
+    { name: "images", maxCount: 5 },
+    { name: "inventory_files", maxCount: 5 },
+  ]), async (req: Request, res: Response) => {
+    try{
+        const formData = req.body;
+        const files = req.files as {
+            images?: Express.Multer.File[];
+            inventory_files?: Express.Multer.File[];
+          };
+
+        const itemId = uuid();
+        const itemData = {
+            item_id: itemId,
+            item_name: formData.item_name,
+            category: formData.category,
+            source: formData.source,
+            serial_number: formData.serial_number,
+            certificate: formData.certificate,
+            quantity_available: Number.parseInt(formData.quantity_available),
+            unit_price: Number.parseFloat(formData.unit_price),
+            total_value: Number.parseFloat(formData.total_value),
+            supplier_name: formData.supplier_name,
+            supplier_contact: formData.get("supplier_contact"),
+            current_location: formData.get("current_location"),
+            date_maintenance: formData.get("date_maintenance") ? new Date(formData.get("date_maintenance")) : null,
+            date_of_acquisition: formData.get("date_of_acquisition")
+                ? new Date(formData.get("date_of_acquisition"))
+                : null,
+            expiration_date: formData.get("expiration_date") ? new Date(formData.get("expiration_date")) : null,
+            condition: formData.get("condition"),
+            check_inventory_update: formData.get("check_inventory_update"),
+            group_division: formData.get("group_division"),
+            notes: formData.get("notes"),
+    }
+    const item = await prisma.inventory.create({
+        data: itemData,
+    });
+
+    // Simpan images
+    if (files.images) {
+        for (const file of files.images) {
+          await prisma.images.create({
+            data: {
+              image_id: uuid(),
+              item_id: itemId,
+              file_type: file.mimetype,
+              file_name: file.filename,
+            },
+          });
+        }
+      }
+  
+      // Simpan inventory_files
+      if (files.inventory_files) {
+        for (const file of files.inventory_files) {
+          await prisma.inventory_files.create({
+            data: {
+              file_id: uuid(),
+              item_id: itemId,
+              file_type: file.mimetype,
+              file_name: file.filename,
+            },
+          });
+        }
+      }
+        res.status(200).json({
+            status: "success",
+            message: "Item created successfully",
+            data: item,
+        });
+    } catch (error : any) {
+        console.error("Error creating item:", error);
+        res.status(500).json({
+            status: "error",
+            message: "Failed to create item",
+            error: error.message,
+        });
+    }
+});
+
+// get all barang
+DashboardRouter.get("/read", async (req: Request, res: Response) => {
+    try {
+        const items = await prisma.inventory.findMany({
+            include: {
+                images: true,
+                inventory_files: true,
+            },
+        });
+        res.status(200).json({
+            status: "success",
+            message: "Items retrieved successfully",
+            data: items,
+        });
+    } catch (error : any) {
+        console.error("Error retrieving items:", error);
+        res.status(500).json({
+            status: "error",
+            message: "Failed to retrieve items",
+            error: error.message,
+        });
+    }
 }
+);
+
+export default DashboardRouter;
+// 
+
