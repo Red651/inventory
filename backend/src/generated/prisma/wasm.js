@@ -125,6 +125,44 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role'
 };
 
+exports.Prisma.InventoryScalarFieldEnum = {
+  item_id: 'item_id',
+  item_name: 'item_name',
+  category: 'category',
+  source: 'source',
+  serial_number: 'serial_number',
+  certificate: 'certificate',
+  quantity_available: 'quantity_available',
+  unit_price: 'unit_price',
+  total_value: 'total_value',
+  supplier_name: 'supplier_name',
+  supplier_contact: 'supplier_contact',
+  current_location: 'current_location',
+  date_maintenance: 'date_maintenance',
+  date_of_acquisition: 'date_of_acquisition',
+  expiration_date: 'expiration_date',
+  condition: 'condition',
+  check_inventory_update: 'check_inventory_update',
+  group_division: 'group_division',
+  notes: 'notes'
+};
+
+exports.Prisma.ImagesScalarFieldEnum = {
+  image_id: 'image_id',
+  item_id: 'item_id',
+  file_type: 'file_type',
+  file_name: 'file_name',
+  content: 'content'
+};
+
+exports.Prisma.Inventory_filesScalarFieldEnum = {
+  file_id: 'file_id',
+  item_id: 'item_id',
+  file_type: 'file_type',
+  file_name: 'file_name',
+  content: 'content'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -135,9 +173,17 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  inventory: 'inventory',
+  images: 'images',
+  inventory_files: 'inventory_files'
 };
 
 /**

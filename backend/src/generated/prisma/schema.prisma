@@ -21,3 +21,49 @@ model User {
   password String
   role     String
 }
+
+model inventory {
+  item_id                String            @id @default(uuid()) @db.Uuid
+  item_name              String?           @db.VarChar(255)
+  category               String?           @db.VarChar(50)
+  source                 String?           @db.VarChar(50)
+  serial_number          String?           @db.VarChar(255)
+  certificate            String?           @db.VarChar(255)
+  quantity_available     Int?
+  unit_price             Float?
+  total_value            Float?
+  supplier_name          String?           @db.VarChar(100)
+  supplier_contact       String?           @db.VarChar(100)
+  current_location       String?           @db.VarChar(100)
+  date_maintenance       DateTime?
+  date_of_acquisition    DateTime?
+  expiration_date        DateTime?
+  condition              String?           @db.VarChar(20)
+  check_inventory_update String?           @db.VarChar(50)
+  group_division         String?           @db.VarChar(50)
+  notes                  String?           @db.Text
+  inventory_files        inventory_files[]
+  images                 images[]
+}
+
+model images {
+  image_id  String     @id @default(uuid()) @db.Uuid
+  item_id   String?    @db.Uuid
+  file_type String?    @db.VarChar(20)
+  file_name String?    @db.VarChar(100)
+  content   Bytes?
+  inventory inventory? @relation(fields: [item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction, map: "images_ibfk_1")
+
+  @@index([item_id], map: "images_item_id_idx")
+}
+
+model inventory_files {
+  file_id   String     @id @default(uuid()) @db.Uuid
+  item_id   String?    @db.Uuid
+  file_type String?    @db.VarChar(20)
+  file_name String?    @db.VarChar(100)
+  content   Bytes?
+  inventory inventory? @relation(fields: [item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction, map: "inventory_files_ibfk_1")
+
+  @@index([item_id], map: "inventory_files_item_id_idx")
+}

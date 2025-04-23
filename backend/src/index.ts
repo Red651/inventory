@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import passport from './auth/passport';
-import { prisma } from './generated/prisma/database';
 import dotenv from "dotenv";
 import session from "express-session";
 import authRouter from './routes/auth';
+import DashboardRouter from './api/dashboard'; 
 
 const app = express();
 
@@ -26,19 +26,17 @@ app.use(session({
     })
 );
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
 app.use(passport.session())
 
 // routes
+
+// Login
 app.use('/auth', authRouter);
-app.get("/data", async (req : Request, res : Response)=>{
-    try{
-        const data = await prisma.user.findMany()
-        res.json(data)
-    }catch{
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-})
+// Dashboard Barang
+app.use('/dashboard', DashboardRouter);
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
