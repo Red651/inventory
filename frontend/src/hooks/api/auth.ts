@@ -2,7 +2,8 @@ import { z } from 'zod';
 import { toast } from "sonner"
 import { removeClientAccessToken, setClientAccessToken } from '@/api/axios';
 import { LoginRequestSchema, LoginResponseSchema } from '@/api/dtos';
-import { createPostMutationHook } from '@/api/helpers';
+import { createGetQueryHook, createPostMutationHook } from '@/api/helpers';
+import { User } from '@/api/entities';
 
 export const useLogin = createPostMutationHook({
   endpoint: '/auth/login', // Updated endpoint
@@ -35,4 +36,10 @@ export const useLogout = createPostMutationHook({
       toast.error(error.message);
     },
   },
+});
+
+export const useGetUserInfo = createGetQueryHook({
+  endpoint: 'auth/me',
+  responseSchema: User,
+  rQueryParams: { queryKey: ['getUser'] },
 });
