@@ -3,6 +3,7 @@ import { Router } from "express";
 import { prisma } from "../generated/prisma/database";
 import { v4 as uuid } from "uuid";
 import { upload } from "../Middleware/upload";
+import fs from "fs";
 
 const DashboardRouter = Router();
 
@@ -274,38 +275,50 @@ DashboardRouter.delete("/delete/:id", async (req: Request, res: Response) => {
 // liat gambar barang by id
 DashboardRouter.get("/images/:id", async (req: Request, res: Response) => {
     try {
-        const itemId = req.params.id;
-        const images = await prisma.images.findMany({
-            where: {
-                item_id: itemId,
-            },
+      const itemId = req.params.id;
+      const images = await prisma.images.findMany({
+        where: { item_id: itemId },
+      });
+  
+      if (!images || images.length === 0) {
+        res.status(404).json({
+          status: "error",
+          message: "Images not found",
         });
-
-        if (!images) {
-            res.status(404).json({
-                status: "error",
-                message: "Images not found",
-            });
-            return;
-        }
-        res.sendFile(images[0].file_name, {
-            root: "public/images",
+        return;
+      }
+  
+      const fileName = images[0].file_name;
+  
+      if (!fileName) {
+        res.status(404).json({
+          status: "error",
+          message: "File name is missing",
         });
-        res.status(200).json({
-            status: "success",
-            message: "Images retrieved successfully",
-            data: images,
+        return;
+      }
+  
+      const filePath = `public/images/${fileName}`;
+      console.log("File path:", filePath);
+  
+      if (!fs.existsSync(filePath)) {
+        res.status(404).json({
+          status: "error",
+          message: "File not found on server",
         });
-    } catch (error : any) {
-        console.error("Error retrieving images:", error);
-        res.status(500).json({
-            status: "error",
-            message: "Failed to retrieve images",
-            error: error.message,
-        });
+        return;
+      }
+  
+      return res.sendFile(fileName, { root: "public/images" });
+    } catch (error: any) {
+      console.error("Error retrieving images:", error);
+      res.status(500).json({
+        status: "error",
+        message: "Failed to retrieve images",
+        error: error.message,
+      });
     }
-}
-);
+  });
 
 export default DashboardRouter;
 

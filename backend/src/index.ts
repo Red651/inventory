@@ -30,8 +30,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use("/images", express.static(path.join(__dirname, "public/images")));
-
+app.use("/public", express.static(path.join(__dirname, "..", "public")));
 
 // routes
 
