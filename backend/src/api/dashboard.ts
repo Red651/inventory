@@ -298,8 +298,7 @@ DashboardRouter.get("/images/:id", async (req: Request, res: Response) => {
         return;
       }
   
-      const filePath = `public/images/${fileName}`;
-      console.log("File path:", filePath);
+      const filePath = `src/public/images/${fileName}`;
   
       if (!fs.existsSync(filePath)) {
         res.status(404).json({
@@ -309,7 +308,7 @@ DashboardRouter.get("/images/:id", async (req: Request, res: Response) => {
         return;
       }
   
-      return res.sendFile(fileName, { root: "public/images" });
+      return res.sendFile(fileName, { root: "src/public/images" });
     } catch (error: any) {
       console.error("Error retrieving images:", error);
       res.status(500).json({
