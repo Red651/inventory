@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from 'react';
 import { loadAccessToken } from '@/api/axios';
+import { getUserInfo } from '@/api/resources';
 // import { getAccountInfo } from '@/api/resources';
 
 interface AuthContextValues {
@@ -21,12 +22,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     loadAccessToken();
-    setIsInitialized(true);
-
-    // getAccountInfo()
-    //   .then(() => setIsAuthenticated(true))
-    //   .catch(() => setIsAuthenticated(false))
-    //   .finally(() => setIsInitialized(true));
+    getUserInfo()
+      .then(() => setIsAuthenticated(true))
+      .catch(() => setIsAuthenticated(false))
+      .finally(() => setIsInitialized(true));
   }, []);
 
   const value = useMemo(
