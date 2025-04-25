@@ -4,7 +4,8 @@ import passport from './auth/passport';
 import dotenv from "dotenv";
 import session from "express-session";
 import authRouter from './routes/auth';
-import DashboardRouter from './api/dashboard'; 
+import DashboardRouter from './api/dashboard';
+import path from 'path';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use("/public", express.static(path.join(__dirname, "..", "public")));
 
 // routes
 

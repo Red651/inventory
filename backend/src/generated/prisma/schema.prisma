@@ -50,9 +50,9 @@ model images {
   image_id  String     @id @default(uuid()) @db.Uuid
   item_id   String?    @db.Uuid
   file_type String?    @db.VarChar(20)
-  file_name String?    @db.VarChar(100)
+  file_name String?    @db.VarChar(255)
   content   Bytes?
-  inventory inventory? @relation(fields: [item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction, map: "images_ibfk_1")
+  inventory inventory? @relation(fields: [item_id], references: [item_id], onDelete: Cascade, onUpdate: NoAction, map: "images_ibfk_1")
 
   @@index([item_id], map: "images_item_id_idx")
 }
@@ -61,9 +61,9 @@ model inventory_files {
   file_id   String     @id @default(uuid()) @db.Uuid
   item_id   String?    @db.Uuid
   file_type String?    @db.VarChar(20)
-  file_name String?    @db.VarChar(100)
+  file_name String?    @db.VarChar(255)
   content   Bytes?
-  inventory inventory? @relation(fields: [item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction, map: "inventory_files_ibfk_1")
+  inventory inventory? @relation(fields: [item_id], references: [item_id], onDelete: Cascade, onUpdate: NoAction, map: "inventory_files_ibfk_1")
 
   @@index([item_id], map: "inventory_files_item_id_idx")
 }
