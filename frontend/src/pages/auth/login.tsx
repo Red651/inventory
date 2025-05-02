@@ -19,10 +19,8 @@ export default function LoginForm() {
   // const navigate = useNavigate();
 
   const onSubmit : SubmitHandler<LoginRequestSchema> = async (data) => {
-    console.log("bruh");
     login({ variables: data}, {
       onSuccess: () => {
-        console.log("berhasil");
         setIsAuthenticated(true);
       },
     });

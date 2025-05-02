@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { dateSchema } from '@/utilities/date';
 
 export const CreateAdmin = z.object({
     name: z.string(),
