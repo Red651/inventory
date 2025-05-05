@@ -100,6 +100,7 @@ import {
 
 import { DashboardBarangSchema } from "@/api/entities"
 import { AddInventoryItemModal } from "@/components/add-barang"
+import { UpdateInventoryItemModal } from "@/components/update-barang"
 import axios from "axios"
 
 
@@ -151,20 +152,17 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof DashboardBarangSchema>>
 
 export function DataTable({
   data: initialData,
-  refetch
+  refetch,
 }: {
   data: z.infer<typeof DashboardBarangSchema>[]
-  refetch : () => void
+  refetch: () => void
 }) {
   const [data, setData] = React.useState(() => initialData)
   const [editItem, setEditItem] = React.useState<z.infer<typeof DashboardBarangSchema> | null>(null)
   const [editModalOpen, setEditModalOpen] = React.useState(false)
   const [rowSelection, setRowSelection] = React.useState({})
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
@@ -178,29 +176,28 @@ export function DataTable({
   )
 
   const handleDelete = async (id: string) => {
-    const confirm = window.confirm("Yakin ingin menghapus item ini?");
-    if (!confirm) return;
-  
+    const confirm = window.confirm("Yakin ingin menghapus item ini?")
+    if (!confirm) return
+
     try {
       await axios.delete(`http://localhost:3000/dashboard/delete/${id}`).then((res) => {
         refetch()
-        console.log("Item deleted:", res.data);
-        alert("Item berhasil dihapus");
-      });
-
+        console.log("Item deleted:", res.data)
+        alert("Item berhasil dihapus")
+      })
     } catch (error) {
-      console.error("Gagal hapus item:", error);
-      alert("Gagal menghapus item. Coba lagi.");
-      refetch();
+      console.error("Gagal hapus item:", error)
+      alert("Gagal menghapus item. Coba lagi.")
+      refetch()
     }
-  };
+  }
+
   const columns: ColumnDef<z.infer<typeof DashboardBarangSchema>>[] = [
     {
       id: "drag",
       header: () => null,
       cell: ({ row }) => <DragHandle id={row.original.item_id} />,
     },
-    
     {
       accessorKey: "nama",
       header: "Nama",
@@ -224,10 +221,7 @@ export function DataTable({
       accessorKey: "source",
       header: "Source",
       cell: ({ row }) => {
-        const source = row.original.source;
-
-
-    
+        const source = row.original.source
         return (
           <Badge
             variant="outline"
@@ -237,7 +231,7 @@ export function DataTable({
           >
             {source ? source.charAt(0).toUpperCase() + source.slice(1) : "Unknown"}
           </Badge>
-        );
+        )
       },
     },
     {
@@ -251,7 +245,6 @@ export function DataTable({
         </div>
       ),
     },
-    
     {
       accessorKey: "certificate",
       header: "Certificate",
@@ -264,7 +257,7 @@ export function DataTable({
       ),
     },
     {
-      accessorKey: "quantity available",
+      accessorKey: "quantity_available",
       header: "Quantity Available",
       cell: ({ row }) => (
         <div className="w-32">
@@ -275,7 +268,7 @@ export function DataTable({
       ),
     },
     {
-      accessorKey: "unit price",
+      accessorKey: "unit_price",
       header: "Unit Price",
       cell: ({ row }) => (
         <div className="w-32">
@@ -286,7 +279,7 @@ export function DataTable({
       ),
     },
     {
-      accessorKey: "total value",
+      accessorKey: "total_value",
       header: "Total Value",
       cell: ({ row }) => (
         <div className="w-32">
@@ -297,7 +290,7 @@ export function DataTable({
       ),
     },
     {
-      accessorKey: "supplier name",
+      accessorKey: "supplier_name",
       header: "Supplier Name",
       cell: ({ row }) => (
         <div className="w-32">
@@ -308,7 +301,7 @@ export function DataTable({
       ),
     },
     {
-      accessorKey: "supplier contact",
+      accessorKey: "supplier_contact",
       header: "Supplier Contact",
       cell: ({ row }) => (
         <div className="w-32">
@@ -319,7 +312,7 @@ export function DataTable({
       ),
     },
     {
-      accessorKey: "current location",
+      accessorKey: "current_location",
       header: "Current Location",
       cell: ({ row }) => (
         <div className="w-32">
@@ -347,7 +340,7 @@ export function DataTable({
       ),
     },
     {
-      accessorKey: "date of acquisition",
+      accessorKey: "date_of_acquisition",
       header: "Date of Acquisition",
       cell: ({ row }) => (
         <div className="w-32">
@@ -364,7 +357,7 @@ export function DataTable({
       ),
     },
     {
-      accessorKey: "expiration date",
+      accessorKey: "expiration_date",
       header: "Expiration Date",
       cell: ({ row }) => (
         <div className="w-32">
@@ -385,14 +378,14 @@ export function DataTable({
       header: "Condition",
       cell: ({ row }) => (
         <div className="w-32">
-          <Badge variant="outline" className="text-muted-foreground px-1.5" >
-        {row.original.condition || "N/A"}
-        </Badge>
-      </div>
+          <Badge variant="outline" className="text-muted-foreground px-1.5">
+            {row.original.condition || "N/A"}
+          </Badge>
+        </div>
       ),
     },
     {
-      id: "check inventory update",
+      id: "check_inventory_update",
       header: "Check Inventory Update",
       cell: ({ row }) => (
         <div className="w-32">
@@ -409,7 +402,7 @@ export function DataTable({
       ),
     },
     {
-      id: "group division",
+      id: "group_division",
       header: "Group Division",
       cell: ({ row }) => (
         <div className="w-32">
@@ -460,9 +453,8 @@ export function DataTable({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
-    }
-    
+      ),
+    },
   ]
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
@@ -515,7 +507,6 @@ export function DataTable({
         <Label htmlFor="view-selector" className="sr-only">
           View
         </Label>
-        
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -552,18 +543,17 @@ export function DataTable({
           </DropdownMenu>
           <Dialog>
             <DialogTrigger asChild>
-            <Button variant="outline" size="sm">
-              <IconPlus />
-              
-              <span className="hidden lg:inline">Add Section</span>
-            </Button>
+              <Button variant="outline" size="sm">
+                <IconPlus />
+                <span className="hidden lg:inline">Add Item</span>
+              </Button>
             </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Tambah Barang</DialogTitle>
-                </DialogHeader>
-                <AddInventoryItemModal />
-              </DialogContent>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>Tambah Barang</DialogTitle>
+              </DialogHeader>
+              <AddInventoryItemModal refetch={refetch} />
+            </DialogContent>
           </Dialog>
         </div>
       </div>
@@ -715,6 +705,22 @@ export function DataTable({
       >
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
+
+      {/* Modal untuk edit */}
+      {editModalOpen && editItem && (
+        <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
+          <DialogContent className="max-w-3xl">
+            <DialogHeader>
+              <DialogTitle>Edit Barang</DialogTitle>
+            </DialogHeader>
+            <UpdateInventoryItemModal
+              initialData={editItem}
+              onClose={() => setEditModalOpen(false)}
+              refetch={refetch}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </Tabs>
   )
 }
@@ -820,11 +826,16 @@ function TableCellViewer({ item }: { item: z.infer<typeof DashboardBarangSchema>
               <Input id="header" defaultValue={item.item_name} />
             </div>
             <div className="grid grid-cols-2 gap-4">
-              
               <div className="flex flex-col gap-3">
                 <Label htmlFor="status">Status</Label>
                 <Select defaultValue={item.source ?? ""}>
-
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Local">Local</SelectItem>
+                    <SelectItem value="Import">Import</SelectItem>
+                  </SelectContent>
                 </Select>
               </div>
             </div>

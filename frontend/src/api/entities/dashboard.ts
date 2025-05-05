@@ -25,30 +25,6 @@ export const DashboardBarangSchema = z.object({
     inventory_files: z.any().optional(),
 });
 
-interface BarangResponse {
-    item_id: string;
-    item_name: string;
-    category: string | null;
-    source: string | null;
-    serial_number: string | null;
-    certificate: string | null;
-    quantity_available: number | null;
-    unit_price: number | null;
-    total_value: number | null;
-    supplier_name: string | null;
-    supplier_contact: string | null;
-    current_location: string | null;
-    date_maintenance: string | null;
-    date_of_acquisition: string | null;
-    expiration_date: string | null;
-    condition: string | null;
-    check_inventory_update: string | null;
-    group_division: string | null;
-    notes: string | null;
-    images: { image_id: string; file_name: string; file_type: string }[];
-    inventory_files: { file_id: string; file_name: string; file_type: string }[];
-}
-
 export const DashboardBarangResponse = z.object({
     message: z.string(),
     status: z.string(),
@@ -56,13 +32,4 @@ export const DashboardBarangResponse = z.object({
 });
 export type DashboardBarangResponse = z.infer<typeof DashboardBarangResponse>;
 
-
 export type DashboardBarangSchema = z.infer<typeof DashboardBarangSchema>;
-
-export const DashboardBarang = z.object({
-    message: z.string(),
-    status: z.string(),
-    data: z.array(DashboardBarangSchema)
-});
-
-export type DashboardBarang = z.infer<typeof DashboardBarang>;
