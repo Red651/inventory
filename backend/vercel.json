@@ -1,7 +1,7 @@
 {
     "version": 2,
     "functions": {
-      "/index.ts": {
+      "index.ts": {
         "runtime": "nodejs22.x"
       }
     },
