@@ -6,6 +6,7 @@ import session from "express-session";
 import authRouter from './routes/auth';
 import DashboardRouter from './api/dashboard';
 import path from 'path';
+// import ServerlessHttp from 'serverless-http';
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use('/auth', authRouter);
 // Dashboard Barang
 app.use('/dashboard', DashboardRouter);
 
+// module.exports.handler = ServerlessHttp(app);
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
